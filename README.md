@@ -30,15 +30,21 @@ uv run sourcery "Top 5 semiconductor manufacturers in Taiwan" --out outputs/my_r
 
 ### Web UI
 
-Two terminals:
+Use the launcher script — it handles port cleanup, starts both servers, and opens the browser:
 
 ```bash
-# API server
-uv run python scripts/dev_server.py
+# Windows
+run.bat        # select [2] Start dev server
 
-# Frontend
-npm run dev
-# → http://localhost:3000
+# macOS / Linux
+chmod +x run.sh && ./run.sh   # select [2]
+```
+
+Or manually in two terminals:
+
+```bash
+uv run python scripts/dev_server.py   # Terminal 1: API on :8000
+npm run dev                            # Terminal 2: UI  on :3000
 ```
 
 ### Tests
@@ -119,7 +125,7 @@ vss/                       # the engine
 └── llm/                   # 7 provider adapters behind a common Protocol
 app/                       # Next.js frontend
 components/                # React UI
-api/                       # serverless API layer
+api/                       # Python API handlers (dev server)
 tests/                     # pytest suite
 ```
 

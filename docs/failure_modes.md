@@ -35,9 +35,9 @@ If the pipeline is run using the `stub` LLM provider (meaning no real API keys a
 The OFAC sanctions check relies on a static, local CSV file (`data/ofac_sdn.csv`). If this file isn't updated regularly, newly sanctioned entities will slip right through. 
 **How to fix it:** The system needs a scheduled cron job to automatically pull the latest SDN list daily. 
 
-## 9. Serverless Function Timeouts
-The pipeline is highly concurrent, fanning out to query 7 sources for 5 candidates (35 HTTP requests total). While `asyncio.gather` helps, if external APIs like GLEIF are having a slow day, the total execution time can easily blow past Vercel's standard serverless function timeouts. 
-**Mitigation in place:** If a timeout is looming, the pipeline catches it and returns `partial: true` to the UI, so the user at least gets the data that *did* complete rather than a generic 504 error.
+## 9. Pipeline Timeout on Slow APIs
+The pipeline is highly concurrent, fanning out to query 7 sources for 5 candidates (35 HTTP requests total). While `asyncio.gather` helps, if external APIs like GLEIF are having a slow day, the total execution time can easily blow past reasonable timeouts (especially in serverless or constrained environments).
+**Mitigation in place:** If a timeout is looming, the pipeline catches it and returns `partial: true` to the UI, so the user at least gets the data that *did* complete rather than a generic timeout error.
 
 ## 10. The Ultimate Customer Complaint
 If you put this in front of a real procurement team tomorrow, their first complaint would be: *"Why can't I search for suppliers in [Obscure Region] and get HIGH confidence results?"* 

@@ -1,8 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // In dev, proxy /api/* to the local Python server.
-  // On Vercel, api/*.py serverless functions handle these routes natively.
+  // Proxy /api/* to the local Python server in development.
   async rewrites() {
     if (process.env.NODE_ENV !== "development") return [];
     return [

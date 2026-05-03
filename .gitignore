@@ -20,7 +20,7 @@ node_modules/
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
-.vercel/
+
 .tox/
 htmlcov/
 .coverage
@@ -38,8 +38,7 @@ coverage.xml
 Thumbs.db
 nul
 
-# Batch scripts (flagged by hosting providers)
-*.bat
+
 
 # Run outputs (keep .gitkeep, ignore artifacts)
 outputs/run/

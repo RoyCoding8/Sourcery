@@ -40,8 +40,8 @@ To clean the data, I use `cleanco` to strip over 50 variations of legal suffixes
 **Where it breaks:** Without a database, there is no persistent canonical-ID ledger. Every query runs in isolation, meaning we can't anchor new data to historically verified entities.
 
 ## The Output Layer
-**The Stack:** Next.js 15 (App Router) + Tailwind CSS + Vercel Python Serverless Functions.
+**The Stack:** Next.js 15 (App Router) + Tailwind CSS for the optional web UI. Python dev server for the local API.
 
-**The "Why":** I chose Next.js over Streamlit because it gives me total control over the UI, much cleaner deployment on Vercel, and a real URL structure. Streamlit's widget model is great for notebooks but feels clunky for a polished prototype. The UI is intentionally lean (just a QueryForm, SupplierCard, and EvidenceList). For the backend, Next.js proxy rewrites seamlessly route `/api/*` traffic to the local Python dev server during development, and Vercel automatically deploys the Python files as serverless functions in production.
+**The "Why":** I chose Next.js over Streamlit because it gives me total control over the UI and a real URL structure. Streamlit's widget model is great for notebooks but feels clunky for a polished prototype. The UI is intentionally lean (just a QueryForm, SupplierCard, and EvidenceList). For the backend, Next.js proxy rewrites seamlessly route `/api/*` traffic to the local Python dev server during development.
 
 **Where it breaks:** Without Server-Sent Events (SSE) or WebSockets, the UI blocks until the entire pipeline finishes (~5-15 seconds depending on external API latency). A production build would absolutely need progressive result streaming.
