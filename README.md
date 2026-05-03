@@ -55,31 +55,28 @@ uv run pytest -q
 
 ## How it works
 
-```
-                          ┌─────────────────────────────────────────────┐
-  "Top 5 semiconductor    │                  PIPELINE                   │
-   manufacturers in       │                                             │
-   Taiwan"                │  ┌─────────┐   ┌────────────┐   ┌───────┐  │
-        ──────────────────┤► │ Parser  │──►│ Candidates │──►│Resolve│  │
-                          │  │ (LLM)   │   │ Tavily+DDG │   │(fuzzy)│  │
-                          │  └─────────┘   │ +LLM hypo  │   └───┬───┘  │
-                          │                └────────────┘       │      │
-                          │                                     ▼      │
-                          │  ┌──────────────────────────────────────┐  │
-                          │  │        Evidence Gathering            │  │
-                          │  │  GLEIF · MOEA · TWSE · OFAC · IAF   │  │
-                          │  │  Brave Search · Company Website      │  │
-                          │  └──────────────────┬───────────────────┘  │
-                          │                     ▼                      │
-                          │  ┌──────────────────────────────────────┐  │
-                          │  │     Per-Field Confidence Scoring     │  │
-                          │  │  HIGH: ≥2 Tier-A or 1A+1B           │  │
-                          │  │  MEDIUM: 1 Tier-A or ≥2 Tier-B      │  │
-                          │  │  LOW: single source or LLM-only     │  │
-                          │  └──────────────────┬───────────────────┘  │
-                          │                     ▼                      │
-                          │              JSON + CSV export             │
-                          └─────────────────────────────────────────────┘
+```mermaid
+flowchart LR
+    Q["Natural language query"] --> P["Parser (LLM)"]
+    P --> C["Candidate Generation"]
+    C --> R["Entity Resolution"]
+    R --> E["Evidence Gathering"]
+    E --> S["Per-Field Scoring"]
+    S --> O["JSON + CSV"]
+
+    subgraph Candidates
+        C
+        C1["Tavily"] -.-> C
+        C2["DuckDuckGo"] -.-> C
+        C3["LLM hypothesis"] -.-> C
+    end
+
+    subgraph Verification
+        E
+        E1["GLEIF · MOEA · TWSE"] -.-> E
+        E2["OFAC · IAF"] -.-> E
+        E3["Brave · Company Website"] -.-> E
+    end
 ```
 
 The key idea: registries first, LLM last. If GLEIF says a company exists, that's a HIGH confidence signal. If only the LLM thinks so, that's LOW. The tool is honest about what it knows and what it's guessing.
