@@ -1,0 +1,11 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "uv export --no-dev --frozen --format requirements-txt -o requirements.txt && npm run build",
+  "functions": {
+    "api/run.py": { "maxDuration": 120 },
+    "api/providers.py": { "maxDuration": 5 }
+  },
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/$1" }
+  ]
+}

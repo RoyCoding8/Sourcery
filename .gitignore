@@ -1,0 +1,50 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+dist/
+build/
+
+# Environment / secrets
+.env
+.env.local
+.env.*.local
+
+# Node
+node_modules/
+.next/
+
+# Caches
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.vercel/
+.tox/
+htmlcov/
+.coverage
+coverage.xml
+*.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+nul
+
+# Batch scripts (flagged by hosting providers)
+*.bat
+
+# Run outputs (keep .gitkeep, ignore artifacts)
+outputs/run/
+outputs/demo_run/
+outputs/cli_run/
+data/cache/
+
+# Lock files are committed (uv.lock, package-lock.json)
