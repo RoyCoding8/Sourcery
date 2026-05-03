@@ -15,7 +15,8 @@ def no_seed(monkeypatch):
 
 
 @pytest.mark.asyncio
-async def test_china_ai_uses_country_seed(_no_seed):
+@pytest.mark.usefixtures("no_seed")
+async def test_china_ai_uses_country_seed():
     c = SearchCriteria(product_category="AI", country="China")
     names = [x.name for x in await generate_candidates(c, StubLLM())]
     assert names[:2] == ["Baidu Inc.", "Alibaba Cloud"]

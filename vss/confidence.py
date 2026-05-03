@@ -134,14 +134,19 @@ def score_judged(j: JudgedField, snippets: list[Evidence], field_snippets: list[
     ]
     if j.status == "CONTRADICTED":
         return FieldScore(
-            value=j.value, confidence=Confidence.LOW,
-            reason=f"CONTRADICTED: {j.reason}", evidence=supporting, conflicts=conflicts,
+            value=j.value,
+            confidence=Confidence.LOW,
+            reason=f"CONTRADICTED: {j.reason}",
+            evidence=supporting,
+            conflicts=conflicts,
         )
     if j.status != "VERIFIED" or not supporting:
         return FieldScore(
-            value=j.value, confidence=Confidence.LOW,
+            value=j.value,
+            confidence=Confidence.LOW,
             reason=f"{j.status}: {j.reason or 'no supporting evidence'}",
-            evidence=supporting, conflicts=conflicts,
+            evidence=supporting,
+            conflicts=conflicts,
         )
     score, by_key = _aggregate(j.field, supporting)
     bucket = _bucket(score, len(by_key))

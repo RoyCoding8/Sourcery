@@ -1,4 +1,5 @@
 """Quick smoke test — runs the stub pipeline and prints summary."""
+
 import asyncio
 
 from vss.pipeline import run

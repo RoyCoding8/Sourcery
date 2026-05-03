@@ -5,8 +5,13 @@ from vss.models import Confidence, Evidence, JudgedField, SourceTier
 
 
 def _ev(source: str, tier: SourceTier, **kw) -> Evidence:
-    return Evidence(source=source, source_tier=tier, snippet=kw.get("snippet", "x"), url=kw.get("url", ""),
-                    fetched_at=kw.get("fetched_at", ""))
+    return Evidence(
+        source=source,
+        source_tier=tier,
+        snippet=kw.get("snippet", "x"),
+        url=kw.get("url", ""),
+        fetched_at=kw.get("fetched_at", ""),
+    )
 
 
 def test_two_authoritative_sources_high():
@@ -89,22 +94,21 @@ def test_conflict_caps_high_to_medium():
         _ev("MOEA Taiwan", SourceTier.A, snippet="TSMC | ID: 22099131"),
         _ev("TWSE MOPS", SourceTier.A, snippet="2330 | Vietnam"),
     ]
-    j = JudgedField(field="country_region", value="Taiwan", status="VERIFIED",
-                    reason="ok", supporting_indices=[0, 1])
+    j = JudgedField(field="country_region", value="Taiwan", status="VERIFIED", reason="ok", supporting_indices=[0, 1])
     fs = score_judged(j, snippets)
     assert fs.confidence == Confidence.MEDIUM
     assert "capped to MEDIUM" in fs.reason
 
 
 def test_contradicted_status_is_low():
-    j = JudgedField(field="country_region", value="Taiwan", status="CONTRADICTED",
-                    reason="says Vietnam", supporting_indices=[])
+    j = JudgedField(
+        field="country_region", value="Taiwan", status="CONTRADICTED", reason="says Vietnam", supporting_indices=[]
+    )
     assert score_judged(j, []).confidence == Confidence.LOW
 
 
 def test_unknown_status_is_low():
-    j = JudgedField(field="employee_count", value=None, status="UNKNOWN",
-                    reason="not found", supporting_indices=[])
+    j = JudgedField(field="employee_count", value=None, status="UNKNOWN", reason="not found", supporting_indices=[])
     assert score_judged(j, []).confidence == Confidence.LOW
 
 
